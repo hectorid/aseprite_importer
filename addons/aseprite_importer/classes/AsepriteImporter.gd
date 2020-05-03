@@ -11,11 +11,12 @@ enum Error{
 	MISSING_SPRITE,
 	NO_TAGS_SELECTED,
 	DUPLICATE_TAG_NAME,
+	MISSING_TEXTURE,
 }
 
 
 static func generate_animations(import_data : AsepriteImportData, selected_tags : Array,
-		animation_player : AnimationPlayer, sprite : Node) -> int:
+		animation_player : AnimationPlayer, sprite : Node, texture : Texture) -> int:
 
 	if not(import_data and import_data.json_data):
 		return Error.MISSING_JSON_DATA
@@ -39,6 +40,9 @@ static func generate_animations(import_data : AsepriteImportData, selected_tags 
 
 	if not(sprite is Sprite or sprite is Sprite3D):
 		return Error.MISSING_SPRITE
+
+	if texture == null:
+		return Error.MISSING_TEXTURE
 
 	var animation_root_path := animation_player.root_node
 	var animation_root_node := animation_player.get_node(animation_root_path)
@@ -142,6 +146,7 @@ static func generate_animations(import_data : AsepriteImportData, selected_tags 
 		# Set the animation length equal to the sum of all frame's durations
 		animation.length = time
 
+	sprite.texture = texture
 	sprite.region_enabled = true
 	sprite.centered = true
 

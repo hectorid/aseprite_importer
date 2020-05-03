@@ -82,6 +82,10 @@ func get_state() -> Dictionary:
 	return state
 
 
+func get_texture() -> Texture:
+	return spritesheet_view.texture
+
+
 func load_texture(path : String) -> int:
 	if not path:
 		_show_find_file_prompt(MSG_MISSING_IMAGE_PARAMETER)

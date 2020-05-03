@@ -20,6 +20,7 @@ const ERROR_MSG := {
 	AsepriteImporter.Error.MISSING_SPRITE : "Select a Sprite node!",
 	AsepriteImporter.Error.NO_TAGS_SELECTED : "No tags selected to import!",
 	AsepriteImporter.Error.DUPLICATE_TAG_NAME : "Two or more of the selected tags share the same name\nSelect only tags with distinct names",
+	AsepriteImporter.Error.MISSING_TEXTURE: "No texture selected!",
 }
 
 const IMPORT_MENU_INITIAL_WIDTH := 300
@@ -102,8 +103,9 @@ func _on_GenerateButton_pressed() -> void:
 	var selected_tags : Array = tags_menu.get_selected_tags()
 	var animation_player : AnimationPlayer = select_animation_player_menu.animation_player
 	var sprite : Node = select_sprite_menu.sprite
+	var texture : Texture = spritesheet_inspector.get_texture()
 
-	var error := AsepriteImporter.generate_animations(import_data, selected_tags, animation_player, sprite)
+	var error := AsepriteImporter.generate_animations(import_data, selected_tags, animation_player, sprite, texture)
 
 	if error != OK:
 		var error_msg : String
