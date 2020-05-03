@@ -52,8 +52,6 @@ func _ready():
 
 	tree.set_column_titles_visible(true)
 
-	_tree_root = tree.create_item()
-
 	select_all_button.connect("toggled", self, "_on_SelectAllButton_toggled")
 	tree.connect("cell_selected", self, "_on_Tree_cell_selected")
 	tree.connect("item_edited", self, "_on_Tree_item_edited")
