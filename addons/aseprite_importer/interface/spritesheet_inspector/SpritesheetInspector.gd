@@ -126,7 +126,7 @@ func load_texture(path : String) -> int:
 
 	filename_label.text = file_name
 
-	frame_count.text = "%d frames" % frames.size()
+	_update_frames_count()
 
 	spritesheet_view.show()
 	footer.show()
@@ -150,7 +150,7 @@ func set_state(new_state : Dictionary) -> void:
 
 		filename_label.text = new_state.texture.resource_path
 
-		frame_count.text = "%d frames" % frames.size()
+		_update_frames_count()
 
 		spritesheet_view.show()
 		footer.show()
@@ -164,6 +164,32 @@ func _show_find_file_prompt(message : String) -> void:
 	clear_texture()
 	warning_message.text = message
 	search_file_button.show()
+
+
+func _update_frames_count() -> void:
+	var frames_size := frames.size()
+
+	if frames_size <= 0:
+		frame_count.text = ""
+		return
+
+	frame_count.text = "%d frames" % frames_size
+
+	var distinct_regions := []
+
+	for frame in frames:
+		var region : Dictionary = frame.frame
+		var rect := Rect2(region.x, region.y, region.w, region.h)
+
+		if distinct_regions.find(rect) == -1:
+			distinct_regions.append(rect)
+
+	var distinct_frames_size := distinct_regions.size()
+
+	if frames_size > distinct_frames_size:
+		var merged_frames_count := frames_size - distinct_frames_size
+
+		frame_count.text += " (%d merged)" % merged_frames_count
 
 
 func _update_theme(editor_theme : EditorTheme) -> void:
