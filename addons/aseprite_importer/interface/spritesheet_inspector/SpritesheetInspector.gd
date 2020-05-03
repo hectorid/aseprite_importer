@@ -75,6 +75,8 @@ func get_state() -> Dictionary:
 		state.zoom = spritesheet_view.zoom
 		state.offset = spritesheet_view.offset
 
+	state.warning_msg = warning_message.text
+	state.search_file_button_visible =search_file_button.visible
 	state.settings = settings_menu.settings
 
 	return state
@@ -157,6 +159,8 @@ func set_state(new_state : Dictionary) -> void:
 	else:
 		clear_texture()
 
+	warning_message.text = new_state.get("warning_msg", MSG_IMPORT_JSON)
+	search_file_button.visible = new_state.get("search_file_button_visible", (warning_message.text != MSG_IMPORT_JSON))
 	settings_menu.settings = new_state.get("settings", {})
 
 
