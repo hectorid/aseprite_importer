@@ -4,7 +4,6 @@ extends EditorPlugin
 
 const INTERFACE_SCN = preload("interface/Main.tscn")
 
-const PLUGIN_ICON = preload("plugin_icon.png")
 const DARK_ICON = preload("interface/icons/dark_icon.png")
 const LIGHT_ICON = preload("interface/icons/light_icon.png")
 
