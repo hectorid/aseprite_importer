@@ -104,9 +104,9 @@ static func generate_animations(import_data : AsepriteImportData, selected_tags 
 			"reverse":
 				frame_idxs.invert()
 			"pingpong":
-				var frame_idxs_duplicate := frame_idxs.duplicate()
-				frame_idxs_duplicate.invert()
-				frame_idxs += frame_idxs_duplicate
+				var pong_frame_idxs := range(tag.from + 1, tag.to)
+				pong_frame_idxs.invert()
+				frame_idxs += pong_frame_idxs
 
 		# Insert the new keys
 		for i in frame_idxs:
