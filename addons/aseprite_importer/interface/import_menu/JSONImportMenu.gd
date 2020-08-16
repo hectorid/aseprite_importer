@@ -57,12 +57,12 @@ func _on_FileDialog_file_selected(path : String) -> void:
 		var error_msg : String
 
 		match error:
-			AsepriteImportData.Error.JSON_PARSE_ERROR:
-				error_msg = "Error parsing the file"
-			AsepriteImportData.Error.INVALID_JSON_DATA:
-				error_msg = "Invalid Aseprite JSON file"
+			AsepriteImportData.Error.ERR_JSON_PARSE_ERROR:
+				error_msg = "Error parsing the file: %s" % import_data.error_msg_detail
+			AsepriteImportData.Error.ERR_INVALID_JSON_DATA:
+				error_msg = "Invalid Aseprite JSON file: %s" % import_data.error_msg_detail
 			var code:
-				error_msg = "An error occurred!\nerror code: %d" % code
+				error_msg = "An error occurred!\nerror code: %d %s" % [code, import_data.error_msg_detail]
 
 		set_json_filepath("")
 
