@@ -53,6 +53,7 @@ func _update_theme(editor_theme : EditorTheme) -> void:
 
 #Signal Callbacks
 func _on_ImportButton_pressed() -> void:
+	file_dialog.invalidate()
 	file_dialog.popup_centered_ratio(0.5)
 
 

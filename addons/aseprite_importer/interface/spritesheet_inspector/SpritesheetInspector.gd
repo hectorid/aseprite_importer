@@ -217,6 +217,7 @@ func _on_FileDialog_file_selected(path) -> void:
 
 
 func _on_SearchFileButton_pressed() -> void:
+	file_dialog.invalidate()
 	file_dialog.popup_centered_ratio(.5)
 
 
