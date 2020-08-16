@@ -4,11 +4,13 @@ class_name AsepriteImportData
 
 
 enum Error{
-	OK,
-	ERR_JSON_PARSE_ERROR,
+	OK = 0,
+	# Error codes start from 49 to not conflict with GlobalScope's error constants
+	ERR_JSON_PARSE_ERROR = 49,
 	ERR_INVALID_JSON_DATA,
+	ERR_MISSING_FRAME_TAGS,
+	ERR_EMPTY_FRAME_TAGS
 }
-
 
 const FRAME_TEMPLATE = {
 	frame = {
@@ -48,7 +50,6 @@ const META_TEMPLATE = {
 
 var json_filepath : String
 var json_data : Dictionary
-var error_msg_detail : String
 
 
 func load(filepath : String) -> int:
@@ -56,7 +57,6 @@ func load(filepath : String) -> int:
 
 	var error := file.open(filepath, File.READ)
 	if error != OK:
-		error_msg_detail = "Error opening file: %s, %s" % [filepath, error]
 		return error
 
 	var file_text = file.get_as_text()
@@ -64,11 +64,11 @@ func load(filepath : String) -> int:
 
 	var json := JSON.parse(file_text)
 	if json.error != OK:
-		error_msg_detail = "JSON is invalid: %s" % file_text
 		return Error.ERR_JSON_PARSE_ERROR
 
-	if not _validate_json(json):
-		return Error.ERR_INVALID_JSON_DATA
+	error = _validate_json(json)
+	if error != OK:
+		return error
 
 	json_filepath = filepath
 	json_data = json.result
@@ -121,12 +121,11 @@ func get_tags() -> Array:
 	return json_data.meta.frameTags
 
 
-func _validate_json(json : JSONParseResult) -> bool:
+static func _validate_json(json : JSONParseResult) -> int:
 	var data : Dictionary = json.result
 
-	if not (data is Dictionary and data.has_all(["frames", "meta"])): 
-		error_msg_detail = "JSON is missing frames or meta key." 
-		return false
+	if not (data is Dictionary and data.has_all(["frames", "meta"])):
+		return Error.ERR_INVALID_JSON_DATA
 
 	# "frames" validation
 	var frames = data.frames
@@ -137,15 +136,20 @@ func _validate_json(json : JSONParseResult) -> bool:
 			frame = frames[frame]
 
 		if not _match_template(frame, FRAME_TEMPLATE):
-			error_msg_detail = "JSON frame data is invalid or missing."
-			return false
+			return Error.ERR_INVALID_JSON_DATA
 
 	# "meta" validation
 	if not _match_template(data.meta, META_TEMPLATE):
-		error_msg_detail = "JSON meta data is missing or invalid.\n\nIn Aseprite, do you have tags on your animations?\nAre tags exported?"
-		return false
-		
-	return true
+		var meta := data.meta as Dictionary
+
+		if not meta.has("frameTags"):
+			return Error.ERR_MISSING_FRAME_TAGS
+		elif meta.frameTags == []:
+			return Error.ERR_EMPTY_FRAME_TAGS
+
+		return Error.ERR_INVALID_JSON_DATA
+
+	return OK
 
 
 """
