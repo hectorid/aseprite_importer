@@ -4,6 +4,7 @@ extends Container
 signal generated_json(json_file, sprite_sheet)
 
 var editor_filesystem : EditorFileSystem
+var aseprite_command := "aseprite"
 
 # Childs
 onready var import_button : Button = $InputContainer/ImportButton
@@ -46,6 +47,10 @@ func _on_plugin_data_received(plugin_data : Dictionary):
 	editor_filesystem = plugin_data.get("editor_filesystem")
 
 
+func _on_settings_changed(settings : Dictionary):
+	aseprite_command = settings.get("aseprite_command", aseprite_command)
+
+
 func _on_ImportButton_pressed() -> void:
 	file_dialog.invalidate()
 	file_dialog.popup_centered_ratio(0.5)
@@ -54,7 +59,7 @@ func _on_ImportButton_pressed() -> void:
 func _on_file_selected(file_path : String) -> void:
 	
 	var asepriteCMD : AsepriteCMD = AsepriteCMD.new()
-	asepriteCMD.init("", editor_filesystem)
+	asepriteCMD.init(aseprite_command, editor_filesystem)
 	
 	var output_dir =  file_path.get_base_dir()
 	var basename = asepriteCMD._get_file_basename(file_path)

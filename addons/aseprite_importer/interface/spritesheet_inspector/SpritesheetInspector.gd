@@ -1,6 +1,7 @@
 tool
 extends Container
 
+signal settings_changed
 
 onready var header : HBoxContainer= $Header
 onready var filename_label : Label = header.find_node("Filename")
@@ -227,6 +228,8 @@ func _on_SettingsButton_toggled(button_pressed : bool) -> void:
 
 func _on_SettingsMenu_settings_changed(settings : Dictionary) -> void:
 	spritesheet_view.load_settings(settings)
+	# Propagate Settings
+	self.emit_signal("settings_changed", settings)
 
 
 func _on_SpritesheetInspector_zoom_changed(new_zoom : int) -> void:

@@ -42,6 +42,7 @@ func _ready() -> void:
 	alert_dialog.set_as_toplevel(true)
 
 	self.connect("plugin_data_received", aseprite_import_menu, "_on_plugin_data_received")
+	spritesheet_inspector.connect("settings_changed", aseprite_import_menu, "_on_settings_changed")
 
 	aseprite_import_menu.connect("generated_json", self, "_on_AsepriteImportMenu_generated_json")
 	json_import_menu.connect("data_imported", self, "_on_JSONImportMenu_data_imported")

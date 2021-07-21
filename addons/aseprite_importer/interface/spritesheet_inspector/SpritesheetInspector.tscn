@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/ColorMenuItem.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/SpritesheetView.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/godot_button/godot_hover.png" type="Texture" id=5]
 [ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/godot_button/godot_normal.png" type="Texture" id=6]
 [ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/godot_button/godot_pressed.png" type="Texture" id=7]
+[ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/TextMenuItem.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Image" id=7]
 data = {
@@ -168,14 +169,12 @@ scroll_horizontal_enabled = false
 script = ExtResource( 3 )
 
 [node name="Options" type="VBoxContainer" parent="Body/SettingsMenu"]
-margin_right = 142.0
-margin_bottom = 196.0
+margin_right = 116.0
+margin_bottom = 266.0
 
 [node name="FrameBorder" parent="Body/SettingsMenu/Options" instance=ExtResource( 1 )]
 margin_right = 142.0
 label_text = "Frame Border"
-visibility = true
-show_visibility_button = true
 color_value = Color( 0.501961, 0.501961, 0.501961, 1 )
 color_edit_alpha = false
 color_picker_tooltip = "Change the border color of unselected frames"
@@ -185,8 +184,6 @@ margin_top = 50.0
 margin_right = 142.0
 margin_bottom = 96.0
 label_text = "Selection Border"
-visibility = true
-show_visibility_button = true
 color_value = Color( 1, 1, 0, 1 )
 color_edit_alpha = false
 color_picker_tooltip = "Change the border color of selected frames"
@@ -196,8 +193,6 @@ margin_top = 100.0
 margin_right = 142.0
 margin_bottom = 146.0
 label_text = "Texture Background"
-visibility = true
-show_visibility_button = true
 color_value = Color( 0.25098, 0.25098, 0.25098, 1 )
 color_edit_alpha = false
 color_picker_tooltip = "Change the background color of the spritesheet's transparent area "
@@ -209,9 +204,16 @@ margin_bottom = 196.0
 label_text = "Inspector Background"
 visibility = false
 show_visibility_button = false
-color_value = Color( 0, 0, 0, 1 )
 color_edit_alpha = false
 color_picker_tooltip = "Change the background color of the inspector"
+
+[node name="AsepriteCommand" parent="Body/SettingsMenu/Options" instance=ExtResource( 8 )]
+margin_top = 200.0
+margin_right = 142.0
+margin_bottom = 266.0
+label_text = "Aseprite Command"
+field_tooltip = "Path to the aseprite executable. It considers the system PATH variable. (Default: \"aseprite\")"
+field_text = "aseprite"
 
 [node name="Footer" type="HBoxContainer" parent="."]
 visible = false

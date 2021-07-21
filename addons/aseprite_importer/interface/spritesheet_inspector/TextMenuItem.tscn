@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/TextMenuItem.gd" type="Script" id=1]
+
+[node name="TextMenuItem" type="VBoxContainer"]
+margin_right = 103.0
+margin_bottom = 46.0
+size_flags_horizontal = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Header" type="HBoxContainer" parent="."]
+margin_right = 103.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 0, 22 )
+
+[node name="Label" type="Label" parent="Header"]
+margin_top = 4.0
+margin_right = 103.0
+margin_bottom = 18.0
+size_flags_horizontal = 3
+
+[node name="TextEdit" type="TextEdit" parent="."]
+margin_top = 26.0
+margin_right = 103.0
+margin_bottom = 66.0
+rect_min_size = Vector2( 0, 40 )
+
+[connection signal="text_changed" from="TextEdit" to="." method="_on_TextEdit_text_changed"]
