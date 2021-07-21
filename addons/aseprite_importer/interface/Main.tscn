@@ -103,3 +103,5 @@ margin_bottom = 586.0
 margin_right = 83.0
 margin_bottom = 58.0
 popup_exclusive = true
+
+[connection signal="generated_json" from="Body/ImportMenu/Steps/AsepriteImport" to="Body/ImportMenu/Steps/JSONImportMenu" method="_on_generated_json"]

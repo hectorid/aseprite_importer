@@ -3,6 +3,8 @@ extends Container
 
 signal generated_json(json_file)
 
+var editor_filesystem : EditorFileSystem
+
 # Childs
 onready var import_button : Button = $InputContainer/ImportButton
 onready var file_dialog : FileDialog = $FileDialog
@@ -44,9 +46,12 @@ func _on_ImportButton_pressed() -> void:
 	file_dialog.invalidate()
 	file_dialog.popup_centered_ratio(0.5)
 
+
 func _on_file_selected(file_path : String) -> void:
 	
 	var asepriteCMD : AsepriteCMD = AsepriteCMD.new()
+	#TODO: get editor_filesystem from plugin.gd
+	asepriteCMD.init("", editor_filesystem)
 	
 	var output_dir =  file_path.get_base_dir()
 	var basename = asepriteCMD._get_file_basename(file_path)
@@ -62,11 +67,14 @@ func _on_file_selected(file_path : String) -> void:
 		trim_images = false,
 	}
 
-	var error := asepriteCMD.create_resource(
+	var error = asepriteCMD.create_resource(
 		file_path.replace("res://", "./"), 
 		output_dir.replace("res://", "./"), 
 		options
-	) as int
+	)
+	
+	if error is GDScriptFunctionState:
+		error = yield(error, "completed")
 
 	if error != AsepriteCMD.SUCCESS:
 		var error_msg : String
@@ -94,5 +102,3 @@ func _on_file_selected(file_path : String) -> void:
 		alert_dialog.popup_centered()
 	else:
 		emit_signal("generated_json", json_file, sprite_sheet)
-
-
