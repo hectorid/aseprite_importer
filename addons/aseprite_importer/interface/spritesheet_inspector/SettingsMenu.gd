@@ -66,6 +66,8 @@ func set_settings(new_settings : Dictionary) -> void:
 				menu.visibility = settings[property].get("visibility", false)
 			"text_menu":
 				menu.field_text = settings[property]
+			"checkbox_menu":
+				menu.pressed = settings[property]
 		
 	emit_signal("settings_changed", settings)
 
@@ -81,5 +83,7 @@ func _on_property_changed(menu_item : Node) -> void:
 			settings[property]["visibility"] = menu_item.visibility
 		"text_menu":
 			settings[property] = menu_item.field_text
+		"checkbox_menu":
+			settings[property] = menu_item.pressed
 	
 	emit_signal("settings_changed", settings)

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/CheckboxMenuItem.gd" type="Script" id=1]
+
+[node name="CheckboxMenuItem" type="CheckBox"]
+margin_right = 103.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
