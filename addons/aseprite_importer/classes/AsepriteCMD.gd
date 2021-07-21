@@ -60,7 +60,7 @@ func _aseprite_export_spritesheet(file_name: String, output_folder: String, opti
 	var exception_pattern = options.get('exception_pattern', "")
 	var only_visible_layers = options.get('only_visible_layers', false)
 	var trim_images = options.get('trim_images', false)
-	var output_name = file_name if options.get('output_filename') == "" else options.get('output_filename')
+	var output_name = file_name if not options.get('output_filename') else options.get('output_filename')
 	var basename = _get_file_basename(output_name)
 	var output_dir = output_folder.replace("res://", "./")
 	var data_file = "%s/%s.json" % [output_dir, basename]
