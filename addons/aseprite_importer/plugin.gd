@@ -13,6 +13,7 @@ var editor_interface := get_editor_interface()
 var editor_base_control := editor_interface.get_base_control()
 var editor_settings := editor_interface.get_editor_settings()
 var editor_viewport := editor_interface.get_editor_viewport()
+var editor_filesystem := editor_interface.get_resource_filesystem()
 
 
 var _state_set := false
@@ -86,6 +87,9 @@ func _on_animations_generated(animation_player : AnimationPlayer) -> void:
 
 
 func _on_interface_ready() -> void:
+	var plugin_data := { editor_filesystem = editor_filesystem }
+	interface.emit_signal("plugin_data_received", plugin_data)
+	
 	_update_theme()
 
 

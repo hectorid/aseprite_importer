@@ -42,6 +42,10 @@ func _update_theme(editor_theme : EditorTheme) -> void:
 
 
 # Signal Callbacks
+func _on_plugin_data_received(plugin_data : Dictionary):
+	editor_filesystem = plugin_data.get("editor_filesystem")
+
+
 func _on_ImportButton_pressed() -> void:
 	file_dialog.invalidate()
 	file_dialog.popup_centered_ratio(0.5)
@@ -50,7 +54,6 @@ func _on_ImportButton_pressed() -> void:
 func _on_file_selected(file_path : String) -> void:
 	
 	var asepriteCMD : AsepriteCMD = AsepriteCMD.new()
-	#TODO: get editor_filesystem from plugin.gd
 	asepriteCMD.init("", editor_filesystem)
 	
 	var output_dir =  file_path.get_base_dir()

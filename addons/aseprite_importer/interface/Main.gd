@@ -33,12 +33,15 @@ var _is_ready := false
 
 
 signal animations_generated(animation_player)
+signal plugin_data_received(plugin_data)
 
 
 func _ready() -> void:
 	import_menu.rect_size.x = IMPORT_MENU_INITIAL_WIDTH
 
 	alert_dialog.set_as_toplevel(true)
+
+	self.connect("plugin_data_received", aseprite_import_menu, "_on_plugin_data_received")
 
 	aseprite_import_menu.connect("generated_json", self, "_on_AsepriteImportMenu_generated_json")
 	json_import_menu.connect("data_imported", self, "_on_JSONImportMenu_data_imported")
