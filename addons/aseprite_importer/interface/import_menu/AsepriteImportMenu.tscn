@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/aseprite_importer/interface/import_menu/AsepriteImportMenu.gd" type="Script" id=1]
+
+[node name="AsepriteImport" type="VBoxContainer"]
+margin_right = 91.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_right = 238.0
+margin_bottom = 14.0
+text = "Generate JSON Data (Needs Aseprite)"
+valign = 1
+
+[node name="InputContainer" type="HBoxContainer" parent="."]
+margin_top = 18.0
+margin_right = 238.0
+margin_bottom = 38.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ImportButton" type="Button" parent="InputContainer"]
+margin_right = 238.0
+margin_bottom = 20.0
+hint_tooltip = "Import a Aseprite JSON file"
+size_flags_horizontal = 3
+text = "Import .aseprite"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+margin_top = 42.0
+margin_right = 216.0
+margin_bottom = 172.0
+window_title = "Select the JSON file"
+resizable = true
+mode_overrides_title = false
+mode = 0
+filters = PoolStringArray( "*.ase ; Aseprite Files", " *.aseprite ; Aseprite Files" )
+show_hidden_files = true
+
+[node name="AlertDialog" type="AcceptDialog" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_top = 42.0
+margin_right = 400.0
+margin_bottom = 100.0
+popup_exclusive = true

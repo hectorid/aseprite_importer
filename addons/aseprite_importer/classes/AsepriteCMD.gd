@@ -1,6 +1,8 @@
 tool
 extends Node
 
+class_name AsepriteCMD
+
 enum {
 	FILE_EXPORT_MODE,
 	LAYERS_EXPORT_MODE
@@ -16,6 +18,16 @@ enum {
 	ERR_NO_VALID_LAYERS_FOUND,
 	ERR_INVALID_ASEPRITE_SPRITESHEET
 }
+
+# List of Options
+	#	do_not_create_resource
+	#	exception_pattern
+	#	only_visible_layers
+	#	trim_images
+	#	output_filename
+	#	export_mode
+	#	remove_source_files_allowed
+	#	remove_source_files
 
 var default_command := 'aseprite'
 var command : String
