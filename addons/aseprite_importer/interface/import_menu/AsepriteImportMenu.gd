@@ -1,7 +1,7 @@
 tool
 extends Container
 
-signal generated_json(json_file)
+signal generated_json(json_file, sprite_sheet)
 
 var editor_filesystem : EditorFileSystem
 

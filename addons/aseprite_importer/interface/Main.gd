@@ -3,6 +3,7 @@ extends PanelContainer
 
 onready var import_menu : Container = $Body/ImportMenu
 onready var steps : Container = import_menu.get_node("Steps")
+onready var aseprite_import_menu : Container = steps.get_node("AsepriteImportMenu")
 onready var json_import_menu : Container = steps.get_node("JSONImportMenu")
 onready var tags_menu : Container = steps.get_node("TagsMenu")
 onready var select_animation_player_menu = steps.get_node("SelectAnimationPlayerMenu")
@@ -39,6 +40,7 @@ func _ready() -> void:
 
 	alert_dialog.set_as_toplevel(true)
 
+	aseprite_import_menu.connect("generated_json", self, "_on_AsepriteImportMenu_generated_json")
 	json_import_menu.connect("data_imported", self, "_on_JSONImportMenu_data_imported")
 	json_import_menu.connect("data_cleared", self, "_on_JSONImportMenu_data_cleared")
 	tags_menu.connect("frame_selected", self, "_on_TagSelectMenu_frame_selected")
@@ -154,3 +156,7 @@ func _on_TagSelectMenu_frame_selected(idx : int) -> void:
 func _on_TagSelectMenu_tag_selected(tag_idx : int) -> void:
 	var selected_tag := import_data.get_tag(tag_idx)
 	spritesheet_inspector.select_frames(range(selected_tag.from, selected_tag.to + 1))
+
+
+func _on_AsepriteImportMenu_generated_json(json_file, sprite_sheet):
+	json_import_menu._on_generated_json(json_file, sprite_sheet)

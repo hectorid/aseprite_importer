@@ -55,7 +55,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 12
 
-[node name="AsepriteImport" parent="Body/ImportMenu/Steps" instance=ExtResource( 7 )]
+[node name="AsepriteImportMenu" parent="Body/ImportMenu/Steps" instance=ExtResource( 7 )]
 margin_right = 300.0
 
 [node name="JSONImportMenu" parent="Body/ImportMenu/Steps" instance=ExtResource( 3 )]
@@ -103,5 +103,3 @@ margin_bottom = 586.0
 margin_right = 83.0
 margin_bottom = 58.0
 popup_exclusive = true
-
-[connection signal="generated_json" from="Body/ImportMenu/Steps/AsepriteImport" to="Body/ImportMenu/Steps/JSONImportMenu" method="_on_generated_json"]
