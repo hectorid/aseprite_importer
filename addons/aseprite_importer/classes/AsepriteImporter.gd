@@ -16,7 +16,7 @@ enum Error{
 
 
 static func generate_animations(import_data : AsepriteImportData, selected_tags : Array,
-		animation_player : AnimationPlayer, sprite : Node, texture : Texture) -> int:
+		animation_player : AnimationPlayer, sprite : Node, texture : Texture, ignore_offset_track := false) -> int:
 
 	if not(import_data and import_data.json_data):
 		return Error.MISSING_JSON_DATA
@@ -52,11 +52,14 @@ static func generate_animations(import_data : AsepriteImportData, selected_tags 
 	var tracks := {
 		"region" : {
 			path = (sprite_relative_path + ":region_rect"),
-		},
-		"offset" : {
-			path = (sprite_relative_path + ":offset")
 		}
 	}
+
+	if not ignore_offset_track:
+		tracks["offset"] = {
+			path = (sprite_relative_path + ":offset")
+		}
+
 
 	var frames := import_data.get_frame_array()
 	var is_sprite3d := sprite is Sprite3D
@@ -138,7 +141,8 @@ static func generate_animations(import_data : AsepriteImportData, selected_tags 
 				offset_y *= -1
 
 			# Insert the new key for the offset track
-			animation.track_insert_key(tracks.offset.idx, time, Vector2(offset_x, offset_y))
+			if not ignore_offset_track:
+				animation.track_insert_key(tracks.offset.idx, time, Vector2(offset_x, offset_y))
 
 			# Add up the current frame's duration for the next key position
 			time += frame.duration / 1000

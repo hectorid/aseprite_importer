@@ -11,6 +11,7 @@ const PROP_TO_MENU := {
 	texture_background = "TextureBackground",
 	inspector_background = "InspectorBackground",
 	aseprite_command = "AsepriteCommand",
+	ignore_offset_track = "IgnoreOffsetTrack",
 }
 
 const DEFAULT_SETTINGS :={
@@ -29,7 +30,8 @@ const DEFAULT_SETTINGS :={
 	inspector_background = {
 		color = Color.black,
 	},
-	aseprite_command = "aseprite"
+	aseprite_command = "aseprite",
+	ignore_offset_track = false,
 }
 
 

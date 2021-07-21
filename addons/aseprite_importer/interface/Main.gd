@@ -28,7 +28,7 @@ const IMPORT_MENU_INITIAL_WIDTH := 300
 
 
 var import_data : AsepriteImportData
-
+var settings : Dictionary
 var _is_ready := false
 
 
@@ -43,6 +43,7 @@ func _ready() -> void:
 
 	self.connect("plugin_data_received", aseprite_import_menu, "_on_plugin_data_received")
 	spritesheet_inspector.connect("settings_changed", aseprite_import_menu, "_on_settings_changed")
+	spritesheet_inspector.connect("settings_changed", self, "_on_settings_changed")
 
 	aseprite_import_menu.connect("generated_json", self, "_on_AsepriteImportMenu_generated_json")
 	json_import_menu.connect("data_imported", self, "_on_JSONImportMenu_data_imported")
@@ -110,8 +111,9 @@ func _on_GenerateButton_pressed() -> void:
 	var animation_player : AnimationPlayer = select_animation_player_menu.animation_player
 	var sprite : Node = select_sprite_menu.sprite
 	var texture : Texture = spritesheet_inspector.get_texture()
+	var ignore_offset_track = settings.get("ignore_offset_track", false)
 
-	var error := AsepriteImporter.generate_animations(import_data, selected_tags, animation_player, sprite, texture)
+	var error := AsepriteImporter.generate_animations(import_data, selected_tags, animation_player, sprite, texture, ignore_offset_track)
 
 	if error != OK:
 		var error_msg : String
@@ -162,5 +164,9 @@ func _on_TagSelectMenu_tag_selected(tag_idx : int) -> void:
 	spritesheet_inspector.select_frames(range(selected_tag.from, selected_tag.to + 1))
 
 
-func _on_AsepriteImportMenu_generated_json(json_file, sprite_sheet):
+func _on_AsepriteImportMenu_generated_json(json_file, sprite_sheet) -> void:
 	json_import_menu._on_generated_json(json_file, sprite_sheet)
+
+
+func _on_settings_changed(_settings : Dictionary) -> void:
+	settings = _settings
