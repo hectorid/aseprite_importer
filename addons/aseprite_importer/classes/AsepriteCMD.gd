@@ -17,24 +17,20 @@ enum {
 	ERR_INVALID_ASEPRITE_SPRITESHEET
 }
 
-var default_command = 'aseprite'
-var config: ConfigFile
+var default_command := 'aseprite'
+var command : String
+
 var file_system: EditorFileSystem
 
 var _should_check_file_system = false
 
-func init(config_file: ConfigFile, default_cmd: String, editor_file_system: EditorFileSystem = null):
-	config = config_file
-	default_command = default_cmd
+func init(_command: String, editor_file_system: EditorFileSystem = null):
+	command = _command
 	file_system = editor_file_system
 	_should_check_file_system = file_system != null
 
 
 func _aseprite_command() -> String:
-	var command
-	if config.has_section_key('aseprite', 'command'):
-		command = config.get_value('aseprite', 'command')
-
 	if not command or command == "":
 		return default_command
 	return command
@@ -229,7 +225,7 @@ func create_sprite_frames_from_aseprite_file(source_file: String, output_folder:
 
 	var result = _import(output)
 
-	if options.get("remove_source_files_allowed", false) and config.get_value('aseprite', 'remove_source_files', false):
+	if options.get("remove_source_files_allowed", false) and options.get('remove_source_files', false):
 		var dir = Directory.new()
 		dir.remove(output.data_file)
 		dir.remove(output.sprite_sheet)
@@ -249,7 +245,7 @@ func create_sprite_frames_from_aseprite_layers(source_file: String, output_folde
 	if (_should_check_file_system):
 		yield(_scan_filesystem(), "completed")
 
-	var should_remove_source = options.get("remove_source_files_allowed", false) and config.get_value('aseprite', 'remove_source_files', false)
+	var should_remove_source = options.get("remove_source_files_allowed", false) and options.get('remove_source_files', false)
 
 	for o in output:
 		if o.empty():
