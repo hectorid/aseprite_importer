@@ -94,6 +94,10 @@ func _aseprite_export_spritesheet(file_name: String, output_folder: String, opti
 		print('aseprite: failed to export spritesheet')
 		print(output)
 		return {}
+	if output.size() and (output[0] as String).begins_with("File not found"):
+		print('aseprite: file not found')
+		print(output)
+		return {}
 	return {
 		'data_file': data_file.replace("./", "res://"),
 		"sprite_sheet": sprite_sheet.replace("./", "res://")
