@@ -45,15 +45,6 @@ enum {
 	ERR_INVALID_ASEPRITE_SPRITESHEET
 }
 
-# List of Options
-	#	do_not_create_resource
-	#	exception_pattern
-	#	only_visible_layers
-	#	trim_images
-	#	output_filename
-	#	export_mode
-	#	remove_source_files_allowed
-	#	remove_source_files
 
 var default_command := 'aseprite'
 var command : String
@@ -262,19 +253,8 @@ func create_sprite_frames_from_aseprite_file(source_file: String, output_folder:
 	if (_should_check_file_system):
 		yield(_scan_filesystem(), "completed")
 
-	if options.get("do_not_create_resource", false):
-		return OK
+	return OK
 
-	var result = _import(output)
-
-	if options.get("remove_source_files_allowed", false) and options.get('remove_source_files', false):
-		var dir = Directory.new()
-		dir.remove(output.data_file)
-		dir.remove(output.sprite_sheet)
-		if (_should_check_file_system):
-			yield(_scan_filesystem(), "completed")
-
-	return result
 
 
 func create_sprite_frames_from_aseprite_layers(source_file: String, output_folder: String, options: Dictionary):
@@ -282,56 +262,18 @@ func create_sprite_frames_from_aseprite_layers(source_file: String, output_folde
 	if output.empty():
 		return ERR_NO_VALID_LAYERS_FOUND
 
-	var result = OK
-
 	if (_should_check_file_system):
 		yield(_scan_filesystem(), "completed")
 
-	var should_remove_source = options.get("remove_source_files_allowed", false) and options.get('remove_source_files', false)
-
 	for o in output:
 		if o.empty():
-			result = ERR_ASEPRITE_EXPORT_FAILED
-		else:
-			if options.get("do_not_create_resource", false):
-				result = OK
-			else:
-				result = _import(o)
-				if should_remove_source:
-					var dir = Directory.new()
-					dir.remove(o.data_file)
-					dir.remove(o.sprite_sheet)
+			return ERR_ASEPRITE_EXPORT_FAILED
 
-	if should_remove_source and _should_check_file_system:
-		yield(_scan_filesystem(), "completed")
-
-	return result
+	return OK
 
 
 func _get_file_basename(file_path: String) -> String:
 	return file_path.get_file().trim_suffix('.%s' % file_path.get_extension())
-
-
-func _import(data) -> int:
-	var source_file = data.data_file
-	var sprite_sheet = data.sprite_sheet
-	var file = File.new()
-	var err = file.open(source_file, File.READ)
-	if err != OK:
-			return err
-	var content =  parse_json(file.get_as_text())
-
-	if not _is_valid_aseprite_spritesheet(content):
-		return ERR_INVALID_ASEPRITE_SPRITESHEET
-
-	var texture = _parse_texture_path(sprite_sheet)
-
-	var resource = _create_sprite_frames_with_animations(content, texture)
-
-	var save_path = "%s.%s" % [source_file.get_basename(), "res"]
-	var code =  ResourceSaver.save(save_path, resource, ResourceSaver.FLAG_REPLACE_SUBRESOURCE_PATHS)
-	resource.take_over_path(save_path)
-	return code
 
 
 func _create_sprite_frames_with_animations(content, texture):

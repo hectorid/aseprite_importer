@@ -67,12 +67,12 @@ func _on_file_selected(file_path : String) -> void:
 	var sprite_sheet = "%s/%s.png" % [output_dir, basename]
 	
 	var options := {
-		do_not_create_resource = true, # Needed
 		# Changeable:
 		export_mode = AsepriteCMD.FILE_EXPORT_MODE,
 		exception_pattern = "",
 		only_visible_layers = false,
 		trim_images = false,
+		output_filename = "",
 	}
 
 	var error = asepriteCMD.create_resource(
