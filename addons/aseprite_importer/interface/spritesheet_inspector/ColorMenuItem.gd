@@ -23,6 +23,8 @@ signal property_changed(color_menu_item)
 
 
 func _ready():
+	self.set_meta("menu_type", "color_menu")
+	
 	self.label_text = label_text
 	self.visibility = visibility
 	self.show_visibility_button = show_visibility_button

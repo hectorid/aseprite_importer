@@ -5,11 +5,13 @@ extends Container
 onready var options : Container = $Options
 
 
-const PROP_TO_COLOR_MENU := {
+const PROP_TO_MENU := {
 	frame_border = "FrameBorder",
 	selection_border = "SelectionBorder",
 	texture_background = "TextureBackground",
 	inspector_background = "InspectorBackground",
+	aseprite_command = "AsepriteCommand",
+	ignore_offset_track = "IgnoreOffsetTrack",
 }
 
 const DEFAULT_SETTINGS :={
@@ -28,6 +30,8 @@ const DEFAULT_SETTINGS :={
 	inspector_background = {
 		color = Color.black,
 	},
+	aseprite_command = "aseprite",
+	ignore_offset_track = false,
 }
 
 
@@ -38,13 +42,12 @@ signal settings_changed(settings)
 
 
 func _ready():
-	for property in PROP_TO_COLOR_MENU:
-		var node_name : String = PROP_TO_COLOR_MENU[property]
-		var color_menu = options.get_node(node_name)
+	for property in PROP_TO_MENU:
+		var node_name : String = PROP_TO_MENU[property]
+		var menu := options.get_node(node_name)
 
-		color_menu.set_meta("property", property)
-
-		color_menu.connect("property_changed", self, "_on_ColorMenuItem_property_changed")
+		menu.set_meta("property", property)
+		menu.connect("property_changed", self, "_on_property_changed")
 
 
 # Setters and Getters
@@ -54,21 +57,35 @@ func set_settings(new_settings : Dictionary) -> void:
 	else:
 		settings = DEFAULT_SETTINGS.duplicate(true)
 
-	for property in PROP_TO_COLOR_MENU:
-		var node_name : String = PROP_TO_COLOR_MENU[property]
-		var color_menu = options.get_node(node_name)
+	for property in PROP_TO_MENU:
+		var node_name : String = PROP_TO_MENU[property]
+		var menu = options.get_node(node_name)
+		var menu_type : String = menu.get_meta("menu_type")
 
-		color_menu.color_value = settings[property].color
-		color_menu.visibility = settings[property].get("visibility", false)
-
+		match menu_type:
+			"color_menu":
+				menu.color_value = settings[property].color
+				menu.visibility = settings[property].get("visibility", false)
+			"text_menu":
+				menu.field_text = settings[property]
+			"checkbox_menu":
+				menu.pressed = settings[property]
+		
 	emit_signal("settings_changed", settings)
 
 
 # Signal Callbacks
-func _on_ColorMenuItem_property_changed(color_menu_item : Node) -> void:
-	var property : String = color_menu_item.get_meta("property")
+func _on_property_changed(menu_item : Node) -> void:
+	var property : String = menu_item.get_meta("property")
+	var menu_type : String = menu_item.get_meta("menu_type")
 
-	settings[property]["color"] = color_menu_item.color_value
-	settings[property]["visibility"] = color_menu_item.visibility
-
+	match menu_type:
+		"color_menu":
+			settings[property]["color"] = menu_item.color_value
+			settings[property]["visibility"] = menu_item.visibility
+		"text_menu":
+			settings[property] = menu_item.field_text
+		"checkbox_menu":
+			settings[property] = menu_item.pressed
+	
 	emit_signal("settings_changed", settings)

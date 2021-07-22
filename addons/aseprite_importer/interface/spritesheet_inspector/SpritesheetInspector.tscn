@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/ColorMenuItem.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/SpritesheetView.tscn" type="PackedScene" id=2]
@@ -7,6 +7,9 @@
 [ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/godot_button/godot_hover.png" type="Texture" id=5]
 [ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/godot_button/godot_normal.png" type="Texture" id=6]
 [ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/godot_button/godot_pressed.png" type="Texture" id=7]
+[ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/TextMenuItem.tscn" type="PackedScene" id=8]
+[ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/CheckboxMenuItem.gd" type="Script" id=9]
+[ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/CheckboxMenuItem.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Image" id=7]
 data = {
@@ -158,7 +161,7 @@ margin_bottom = 572.0
 
 [node name="SettingsMenu" type="ScrollContainer" parent="Body"]
 visible = false
-margin_left = 882.0
+margin_left = 875.0
 margin_right = 1024.0
 margin_bottom = 572.0
 size_flags_horizontal = 8
@@ -168,50 +171,63 @@ scroll_horizontal_enabled = false
 script = ExtResource( 3 )
 
 [node name="Options" type="VBoxContainer" parent="Body/SettingsMenu"]
-margin_right = 142.0
-margin_bottom = 196.0
+margin_right = 149.0
+margin_bottom = 294.0
 
 [node name="FrameBorder" parent="Body/SettingsMenu/Options" instance=ExtResource( 1 )]
-margin_right = 142.0
+margin_right = 149.0
 label_text = "Frame Border"
-visibility = true
-show_visibility_button = true
 color_value = Color( 0.501961, 0.501961, 0.501961, 1 )
 color_edit_alpha = false
 color_picker_tooltip = "Change the border color of unselected frames"
 
 [node name="SelectionBorder" parent="Body/SettingsMenu/Options" instance=ExtResource( 1 )]
 margin_top = 50.0
-margin_right = 142.0
+margin_right = 149.0
 margin_bottom = 96.0
 label_text = "Selection Border"
-visibility = true
-show_visibility_button = true
 color_value = Color( 1, 1, 0, 1 )
 color_edit_alpha = false
 color_picker_tooltip = "Change the border color of selected frames"
 
 [node name="TextureBackground" parent="Body/SettingsMenu/Options" instance=ExtResource( 1 )]
 margin_top = 100.0
-margin_right = 142.0
+margin_right = 149.0
 margin_bottom = 146.0
 label_text = "Texture Background"
-visibility = true
-show_visibility_button = true
 color_value = Color( 0.25098, 0.25098, 0.25098, 1 )
 color_edit_alpha = false
 color_picker_tooltip = "Change the background color of the spritesheet's transparent area "
 
 [node name="InspectorBackground" parent="Body/SettingsMenu/Options" instance=ExtResource( 1 )]
 margin_top = 150.0
-margin_right = 142.0
+margin_right = 149.0
 margin_bottom = 196.0
 label_text = "Inspector Background"
 visibility = false
 show_visibility_button = false
-color_value = Color( 0, 0, 0, 1 )
 color_edit_alpha = false
 color_picker_tooltip = "Change the background color of the inspector"
+
+[node name="AsepriteCommand" parent="Body/SettingsMenu/Options" instance=ExtResource( 8 )]
+margin_top = 200.0
+margin_right = 149.0
+margin_bottom = 266.0
+label_text = "Aseprite Command"
+field_tooltip = "Path to the aseprite executable. It considers the system PATH variable. (Default: \"aseprite\")"
+field_text = "aseprite"
+
+[node name="IgnoreOffsetTrack" type="CheckBox" parent="Body/SettingsMenu/Options" instance=ExtResource( 10 )]
+margin_top = 270.0
+margin_right = 149.0
+margin_bottom = 294.0
+hint_tooltip = "The offset track is not created on AnimationPlayer Node"
+size_flags_horizontal = 3
+text = "Ignore Offset Track"
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Footer" type="HBoxContainer" parent="."]
 visible = false

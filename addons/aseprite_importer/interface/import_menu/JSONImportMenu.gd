@@ -90,3 +90,7 @@ func _on_FileDialog_file_selected(path : String) -> void:
 		set_json_filepath(path)
 
 		emit_signal("data_imported", import_data)
+
+
+func _on_generated_json(json_file, _sprite_sheet) -> void:
+	_on_FileDialog_file_selected(json_file)

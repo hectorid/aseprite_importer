@@ -3,6 +3,7 @@ extends PanelContainer
 
 onready var import_menu : Container = $Body/ImportMenu
 onready var steps : Container = import_menu.get_node("Steps")
+onready var aseprite_import_menu : Container = steps.get_node("AsepriteImportMenu")
 onready var json_import_menu : Container = steps.get_node("JSONImportMenu")
 onready var tags_menu : Container = steps.get_node("TagsMenu")
 onready var select_animation_player_menu = steps.get_node("SelectAnimationPlayerMenu")
@@ -27,11 +28,12 @@ const IMPORT_MENU_INITIAL_WIDTH := 300
 
 
 var import_data : AsepriteImportData
-
+var settings : Dictionary
 var _is_ready := false
 
 
 signal animations_generated(animation_player)
+signal plugin_data_received(plugin_data)
 
 
 func _ready() -> void:
@@ -39,6 +41,11 @@ func _ready() -> void:
 
 	alert_dialog.set_as_toplevel(true)
 
+	self.connect("plugin_data_received", aseprite_import_menu, "_on_plugin_data_received")
+	spritesheet_inspector.connect("settings_changed", aseprite_import_menu, "_on_settings_changed")
+	spritesheet_inspector.connect("settings_changed", self, "_on_settings_changed")
+
+	aseprite_import_menu.connect("generated_json", self, "_on_AsepriteImportMenu_generated_json")
 	json_import_menu.connect("data_imported", self, "_on_JSONImportMenu_data_imported")
 	json_import_menu.connect("data_cleared", self, "_on_JSONImportMenu_data_cleared")
 	tags_menu.connect("frame_selected", self, "_on_TagSelectMenu_frame_selected")
@@ -104,8 +111,9 @@ func _on_GenerateButton_pressed() -> void:
 	var animation_player : AnimationPlayer = select_animation_player_menu.animation_player
 	var sprite : Node = select_sprite_menu.sprite
 	var texture : Texture = spritesheet_inspector.get_texture()
+	var ignore_offset_track = settings.get("ignore_offset_track", false)
 
-	var error := AsepriteImporter.generate_animations(import_data, selected_tags, animation_player, sprite, texture)
+	var error := AsepriteImporter.generate_animations(import_data, selected_tags, animation_player, sprite, texture, ignore_offset_track)
 
 	if error != OK:
 		var error_msg : String
@@ -154,3 +162,11 @@ func _on_TagSelectMenu_frame_selected(idx : int) -> void:
 func _on_TagSelectMenu_tag_selected(tag_idx : int) -> void:
 	var selected_tag := import_data.get_tag(tag_idx)
 	spritesheet_inspector.select_frames(range(selected_tag.from, selected_tag.to + 1))
+
+
+func _on_AsepriteImportMenu_generated_json(json_file, sprite_sheet) -> void:
+	json_import_menu._on_generated_json(json_file, sprite_sheet)
+
+
+func _on_settings_changed(_settings : Dictionary) -> void:
+	settings = _settings

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://addons/aseprite_importer/interface/Main.gd" type="Script" id=1]
 [ext_resource path="res://addons/aseprite_importer/interface/import_menu/SelectAnimationPlayerMenu.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://addons/aseprite_importer/interface/import_menu/TagsMenu.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/aseprite_importer/interface/import_menu/SelectSpriteMenu.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/aseprite_importer/interface/spritesheet_inspector/SpritesheetInspector.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/aseprite_importer/interface/import_menu/AsepriteImportMenu.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Image" id=3]
 data = {
@@ -46,7 +47,6 @@ rect_min_size = Vector2( 300, 0 )
 size_flags_vertical = 3
 follow_focus = true
 scroll_horizontal_enabled = false
-scroll_horizontal = 100
 
 [node name="Steps" type="VBoxContainer" parent="Body/ImportMenu"]
 margin_right = 300.0
@@ -55,11 +55,16 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 12
 
-[node name="JSONImportMenu" parent="Body/ImportMenu/Steps" instance=ExtResource( 3 )]
+[node name="AsepriteImportMenu" parent="Body/ImportMenu/Steps" instance=ExtResource( 7 )]
 margin_right = 300.0
 
-[node name="TagsMenu" parent="Body/ImportMenu/Steps" instance=ExtResource( 4 )]
+[node name="JSONImportMenu" parent="Body/ImportMenu/Steps" instance=ExtResource( 3 )]
 margin_top = 50.0
+margin_right = 300.0
+margin_bottom = 88.0
+
+[node name="TagsMenu" parent="Body/ImportMenu/Steps" instance=ExtResource( 4 )]
+margin_top = 100.0
 margin_right = 300.0
 margin_bottom = 432.0
 
